@@ -1,0 +1,80 @@
+:root {
+  --appHeader: #95cd85;
+  --appButton: #4ec5ff;
+  --mainBackground: #cabc76;
+  --font: #000;
+  --appBackground: #fff;
+  --sectionBackground: #fff;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: var(--appBackground);
+  color: var(--font);
+}
+
+.App {
+  text-align: center;
+}
+
+.App-header,
+.App-footer {
+  background-color: var(--appHeader);
+  height: 80px;
+  color: var(--appBackground);
+  width: 100%;
+}
+
+.App-title {
+  font-size: 2.8em;
+  text-align: center;
+  line-height: 75px;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+#appColor {
+  position: relative;
+  float: right;
+  top: 20px;
+  right: 20px;
+}
+
+.selector-container {
+  display: flex;
+  justify-content: flex-start;
+  background-color: var(--sectionBackground);
+}
+
+#dropdown {
+  background-color: var(--appButton);
+  margin-top: 30px;
+  margin-left: 30px;
+  margin-bottom: 30px;
+}
+
+.main-div {
+  background-color: var(--mainBackground);
+}
+
+.list-div {
+  height: 60vh;
+  overflow: scroll;
+}
+
+.map-div {
+  height: 60vh;
+}
+
+#map {
+  height: 100%;
+}
+
+#map-aria-description {
+  display: none;
+}
