@@ -8,12 +8,12 @@ class Main extends Component {
     let { discoveriesDisplayed, mode, styles } = this.props;
     return (
       <main className="main-div">
+        <List discoveriesDisplayed={discoveriesDisplayed} />
         <Map
           discoveriesDisplayed={discoveriesDisplayed}
           mode={mode}
           styles={styles}
         />
-        <List discoveriesDisplayed={discoveriesDisplayed} />
       </main>
     );
   }

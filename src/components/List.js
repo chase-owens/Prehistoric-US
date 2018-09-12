@@ -14,9 +14,17 @@ class List extends Component {
       <div className="list-div">
         <ListGroup className="list">
           {discoveriesDisplayed.map((discovery, i) => (
-            <ListGroupItem className="list-item" key={i}>
-              <ListGroupItemHeading>{discovery.title}</ListGroupItemHeading>
-              <ListGroupItemText>{discovery.description}</ListGroupItemText>
+            <ListGroupItem
+              className="list-item"
+              key={i}
+              title={discovery.title}
+            >
+              <ListGroupItemHeading className="list-words">
+                {discovery.title}
+              </ListGroupItemHeading>
+              <ListGroupItemText className="list-words">
+                {discovery.description}
+              </ListGroupItemText>
             </ListGroupItem>
           ))}
         </ListGroup>

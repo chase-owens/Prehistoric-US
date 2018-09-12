@@ -5,7 +5,7 @@ class Map extends Component {
 
   render() {
     return (
-      <div className="mapWrapper">
+      <div className="map-wrapper">
         <div
           className="map-div"
           aria-labelledby="map-aria-description"

@@ -120,7 +120,9 @@ class App extends Component {
         stylers: [{ color: "#4d71a3" }]
       }
     ],
-    err: false
+    err: false,
+    map: {},
+    infoWindows: []
   };
 
   componentDidMount() {
@@ -136,14 +138,15 @@ class App extends Component {
   }
 
   render() {
+    this.addAnimations();
     if (!this.state.err) {
       return (
-        <div className="container-fluid">
-          <Button id="appColor" onClick={this.changeColor}>
-            {this.state.dark === false ? "Dark" : "Day"}
+        <div className="container-fluid app-wrap">
+          <Button id="app-color" onClick={this.changeColor}>
+            {this.state.dark === false ? "Night" : "Day"}
           </Button>
-          <header className="App-header">
-            <h1 className="App-title">Early USA</h1>
+          <header className="app-header">
+            <h1 className="app-title">Early USA</h1>
           </header>
           <Filter
             updateDiscoveriesDisplayed={this.updateDiscoveriesDisplayed}
@@ -154,27 +157,27 @@ class App extends Component {
             mode={this.state.dark}
             styles={this.state.styles}
           />
-          <footer className="App-footer">
-            <h1 className="App-title">Early USA</h1>
+          <footer className="app-footer">
+            <h1 className="app-title">Early USA</h1>
           </footer>
         </div>
       );
     } else {
       return (
-        <div className="container-fluid">
-          <Button id="appColor" onClick={this.changeColor}>
+        <div className="container-fluid app-wrap">
+          <Button id="app-color" onClick={this.changeColor}>
             {this.state.dark === false ? "Night" : "Day"}
           </Button>
-          <header className="App-header">
-            <h1 className="App-title">Early USA</h1>
+          <header className="app-header">
+            <h1 className="app-title">Early USA</h1>
           </header>
           <Filter
             updateDiscoveriesDisplayed={this.updateDiscoveriesDisplayed}
             type={this.state.type}
           />
           <Error />
-          <footer className="App-footer">
-            <h1 className="App-title">Early USA</h1>
+          <footer className="app-footer">
+            <h1 className="app-title">Early USA</h1>
           </footer>
         </div>
       );
@@ -221,7 +224,6 @@ class App extends Component {
             "#fff"
           );
         }
-        console.log(this.state.dark, this.state.styles);
         this.setStyle();
       }
     );
@@ -320,7 +322,6 @@ class App extends Component {
         },
         () => {
           this.initMap();
-          console.log(this.state.styles, "init Map Here");
         }
       );
     } else {
@@ -335,18 +336,14 @@ class App extends Component {
         },
         () => {
           this.initMap();
-          console.log(this.state.styles, "init Map Here");
         }
       );
     }
   };
 
   updateDiscoveriesDisplayed = type => {
-    console.log(type);
-
     switch (type) {
       case "all":
-        console.log(type);
         this.setState({ type: "Prehistoric Finds" });
         this.setState({
           discoveriesDisplayed: [
@@ -405,6 +402,7 @@ class App extends Component {
         zoom: 4,
         styles: this.state.styles
       });
+      this.setState({ map });
 
       let bounds = new window.google.maps.LatLngBounds();
 
@@ -423,6 +421,7 @@ class App extends Component {
         bounds.extend(marker.position);
 
         let infoWindow = new window.google.maps.InfoWindow({
+          title: find.title,
           maxWidth: 250,
           content:
             "<div>" +
@@ -434,6 +433,8 @@ class App extends Component {
             "</p>" +
             "</div>"
         });
+
+        this.state.infoWindows.push(infoWindow);
 
         marker.addListener("click", function() {
           infoWindow.open(map, marker);
@@ -458,6 +459,50 @@ class App extends Component {
     script.async = true;
     script.defer = true;
     index.parentNode.insertBefore(script, index);
+  }
+
+  addAnimations() {
+    let listItems = document.querySelectorAll(".list-item");
+    let infoWindows = this.state.infoWindows;
+    let map = this.state.map;
+    let markers = this.state.markers;
+
+    for (let x = 0; x < listItems.length; x++) {
+      listItems[x].addEventListener("click", function() {
+        markers.map(marker => {
+          if (marker.title === this.title) {
+            marker.setAnimation(window.google.maps.Animation.BOUNCE);
+            infoWindows[x].open(map, marker);
+          }
+          setTimeout(
+            marker.setAnimation(window.google.maps.Animation.null),
+            6000
+          );
+        });
+      });
+    }
+  }
+
+  openInfoWindow() {
+    let markers = this.state.markers.map(marker => {
+      let infoWindow = new window.google.maps.InfoWindow({
+        maxWidth: 250,
+        content:
+          "<div>" +
+          "<h5>" +
+          marker.title +
+          "</h5>" +
+          "<p>" +
+          marker.description +
+          "</p>" +
+          "</div>"
+      });
+      marker.setAnimation(window.google.maps.Animation.DROP);
+      marker.addListener("click", function() {
+        infoWindow.open(this.state.map, marker);
+      });
+    });
+    this.setState({ markers }, console.log(this.state.markers));
   }
 
   // addIcons() {
