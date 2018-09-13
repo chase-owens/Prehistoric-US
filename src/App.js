@@ -495,13 +495,13 @@ class App extends Component {
   //add listener to list item, when clicked animates marker with same title and opens its infoWindow
   addAnimations() {
     let listItems = document.querySelectorAll(".list-item");
-    let infoWindows = this.state.infoWindows;
-    let map = this.state.map;
-    let markers = this.state.markers;
-    let query = "";
-    let url = "https://en.wikipedia.org/api/rest_v1/page/summary/";
 
     for (let x = 0; x < listItems.length; x++) {
+      let infoWindows = this.state.infoWindows;
+      let map = this.state.map;
+      let markers = this.state.markers;
+      let query = "";
+      let url = "https://en.wikipedia.org/api/rest_v1/page/summary/";
       listItems[x].addEventListener("click", function() {
         markers.map(marker => {
           if (marker.title === this.title) {
@@ -537,44 +537,6 @@ class App extends Component {
         });
       });
     }
-  }
-
-  getData(n) {
-    let infoWindows = this.state.infoWindows;
-    let map = this.state.map;
-    let markers = this.state.markers;
-    let query = "";
-    let url = "https://en.wikipedia.org/api/rest_v1/page/summary/";
-
-    markers.map(marker => {
-      if (marker.title === this.title) {
-        query = marker.query;
-        url += query;
-        console.log(url);
-        fetch(url)
-          .then(response => response.json())
-          .then(response => {
-            infoWindows[n].setContent(
-              "<h6>" +
-                response.displaytitle +
-                "</h6>" +
-                "<p>Thanks to Wikipedia.com</p>"
-            );
-            url = "https://en.wikipedia.org/api/rest_v1/page/summary/";
-            query = "";
-            console.log(response.description);
-          })
-          .catch(err => {
-            console.log(err);
-            infoWindows[n].setContent("<h6>" + marker.title + "</h6>");
-          });
-        marker.setAnimation(window.google.maps.Animation.BOUNCE);
-
-        infoWindows[n].open(map, marker);
-      }
-      setTimeout(marker.setAnimation(window.google.maps.Animation.null), 6000);
-      return marker;
-    });
   }
 
   // addIcons() {
