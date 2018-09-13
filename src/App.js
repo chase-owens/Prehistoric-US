@@ -37,6 +37,7 @@ class App extends Component {
     dinosaurFinds: [
       {
         title: "Cleveland-Lloyd Dinosaur Quarry",
+        query: "Cleveland-Lloyd Dinosaur Quarry",
         location: { lat: 39.323, lng: -110.6879 },
         description:
           "Where more than 12,000 individual bones and one dinosaur egg was discovered",
@@ -44,6 +45,7 @@ class App extends Component {
       },
       {
         title: "Ghost Ranch Quarry",
+        query: "Ghost Ranch",
         location: { lat: 36.3137, lng: -106.482 },
         description:
           "Thousands of Coelophysis follils were discovered by Edwin Colbert",
@@ -51,12 +53,14 @@ class App extends Component {
       },
       {
         title: "La Brea Tar Pits",
+        query: "La Brea Tar Pits",
         location: { lat: 34.0638, lng: -118.3554 },
         description: "Tar pits where Saber Tooth Tigers were discovered",
         type: "dinosaur"
       },
       {
         title: "The Academy of Natural Science",
+        query: "Academy of Natural Sciences of Drexel University",
         location: { lat: 39.9571, lng: -75.1712 },
         description:
           "Home to the first reasonably complete dinosaur the world would ever know, Hadrosaurus foulkii",
@@ -66,6 +70,7 @@ class App extends Component {
     mammothFinds: [
       {
         title: "Waco Mammoth National Monument",
+        query: "Waco Mammoth National Monument",
         location: { lat: 31.6067, lng: -97.176 },
         description:
           "Second greatest concentration of mammoth remains in the world",
@@ -73,6 +78,7 @@ class App extends Component {
       },
       {
         title: "Mammoth Site at Hot Springs",
+        query: "Mammoth Site, Hot Springs",
         location: { lat: 43.4248, lng: -103.4833 },
         description:
           "The site of the greatest concentration of mammoth remains in the world",
@@ -80,12 +86,14 @@ class App extends Component {
       },
       {
         title: "Bristle Mammoth",
+        query: "Pleistocene fossils in Michigan",
         location: { lat: 42.278, lng: -83.7382 },
         description: "The Bristle mammoth skull completely intact with tusks",
         type: "mammoth"
       },
       {
         title: "Children's Discovery Museum of San Jose",
+        query: "Children's Discovery Museum of San Jose",
         location: { lat: 37.3268, lng: -121.8925 },
         description:
           "See bones from Lupe the female mammoth discovered near by",
@@ -95,18 +103,21 @@ class App extends Component {
     trackFinds: [
       {
         title: "Dinosaur Valley State Park",
+        query: "Dinosaur Valley State Park",
         location: { lat: 32.2534, lng: -97.8097 },
         description: "One of the most prolific dinosaur track sites ever found",
         type: "track"
       },
       {
         title: "Dinosaur Footprints Reserve",
+        query: "Dinosaur Footprints Reservation",
         location: { lat: 42.2417, lng: -72.6234 },
         description: "A treasure trove of over 130 dinosaur tracks",
         type: "track"
       },
       {
         title: "Dinosaur Ridge",
+        query: "Dinosaur Ridge",
         location: { lat: 39.6942, lng: -105.2 },
         description:
           "Mostly known for over 300 theropod tracks, Dinosaur Ridge is also home to fossilized bones that poke through the rock",
@@ -122,8 +133,6 @@ class App extends Component {
     ],
     err: false,
     map: {},
-    description: "",
-    query: "Bone Wars",
     infoWindows: []
   };
 
@@ -137,11 +146,9 @@ class App extends Component {
     });
     this.setState({ type: "Prehistoric Finds" });
     this.renderMap();
-    this.getData(this.state.query);
   }
 
   render() {
-    console.log(this.state.description);
     this.addAnimations();
     if (!this.state.err) {
       return (
@@ -150,7 +157,7 @@ class App extends Component {
             {this.state.dark === false ? "Night" : "Day"}
           </Button>
           <header className="app-header">
-            <h1 className="app-title">Early USA</h1>
+            <h1 className="app-title">Prehistoric US</h1>
           </header>
           <Filter
             updateDiscoveriesDisplayed={this.updateDiscoveriesDisplayed}
@@ -163,7 +170,11 @@ class App extends Component {
           />
           <footer className="app-footer">
             <p className="app-title">
-              <strong>{this.state.query}</strong>: {this.state.description}.
+              Copyright (c) 2017{" "}
+              <a href="/">
+                <strong>Prehistoric US</strong>
+              </a>{" "}
+              All Rights Reserved.
             </p>
           </footer>
         </div>
@@ -175,7 +186,7 @@ class App extends Component {
             {this.state.dark === false ? "Night" : "Day"}
           </Button>
           <header className="app-header">
-            <h1 className="app-title">Early USA</h1>
+            <h1 className="app-title">Prehistoric US</h1>
           </header>
           <Filter
             updateDiscoveriesDisplayed={this.updateDiscoveriesDisplayed}
@@ -184,7 +195,11 @@ class App extends Component {
           <Error />
           <footer className="app-footer">
             <p className="app-title">
-              <strong>{this.state.query}</strong>: {this.state.description}.
+              Copyright (c) 2017{" "}
+              <a href="/">
+                <strong>Prehistoric US</strong>
+              </a>{" "}
+              All Rights Reserved.
             </p>
           </footer>
         </div>
@@ -419,6 +434,7 @@ class App extends Component {
         let marker = new window.google.maps.Marker({
           map: map,
           position: { lat: find.location.lat, lng: find.location.lng },
+          query: find.query,
           title: find.title,
           derscription: find.description,
           animation: window.google.maps.Animation.DROP,
@@ -483,13 +499,27 @@ class App extends Component {
     let map = this.state.map;
     let markers = this.state.markers;
     let query = "";
+    let url = "https://en.wikipedia.org/api/rest_v1/page/summary/";
 
     for (let x = 0; x < listItems.length; x++) {
       listItems[x].addEventListener("click", function() {
         markers.map(marker => {
           if (marker.title === this.title) {
-            query = marker.title;
+            query = marker.query;
+            url += query;
+            console.log(url);
+            fetch(url)
+              .then(response => response.json())
+              .then(response => {
+                infoWindows[x].setContent(
+                  "<h6>" + response.displaytitle + "</h6>"
+                );
+                url = "https://en.wikipedia.org/api/rest_v1/page/summary/";
+                query = "";
+                console.log(response.description);
+              });
             marker.setAnimation(window.google.maps.Animation.BOUNCE);
+
             infoWindows[x].open(map, marker);
           }
           setTimeout(
@@ -499,15 +529,6 @@ class App extends Component {
         });
       });
     }
-  }
-
-  //Wikipedia API Request
-  getData(query) {
-    let url = "https://en.wikipedia.org/api/rest_v1/page/summary/";
-    url += query;
-    fetch(url)
-      .then(response => response.json())
-      .then(response => this.setState({ description: response.description }));
   }
 
   // addIcons() {
