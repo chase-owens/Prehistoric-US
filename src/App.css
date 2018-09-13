@@ -20,17 +20,32 @@ body {
   text-align: center;
 }
 
+.app-title {
+  font-size: 1.8em;
+  text-align: center;
+  line-height: 75px;
+}
+
 .app-header,
 .app-footer {
   background-color: var(--appHeader);
-  height: 80px;
   color: var(--appBackground);
   width: 100%;
+  text-align: center;
+}
+
+.app-header {
+  font-size: 0.8em;
+  line-height: 0.8em;
+  height: 80px;
 }
 
 .app-footer {
+  margin-top: 5px;
   font-size: 0.5em;
-  line-height: 0.5em;
+  vertical-align: middle;
+  line-height: 50px;
+  height: 50px;
 }
 
 strong {
@@ -41,12 +56,7 @@ strong {
   width: 100%;
   display: flex;
   flex-direction: column;
-}
-
-.app-title {
-  font-size: 2.8em;
-  text-align: center;
-  line-height: 75px;
+  background: var(--appBackground);
 }
 
 .app-intro {
@@ -105,5 +115,12 @@ strong {
 @media only screen and (min-width: 500px) {
   .main-div {
     flex-direction: row;
+  }
+  .app-title {
+    font-size: 2.8em;
+  }
+
+  .footer-title {
+    font-size: 1.8em;
   }
 }

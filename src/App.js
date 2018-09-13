@@ -169,7 +169,7 @@ class App extends Component {
             styles={this.state.styles}
           />
           <footer className="app-footer">
-            <p className="app-title">
+            <p className="footer-title">
               Copyright (c) 2017{" "}
               <a href="/">
                 <strong>Prehistoric US</strong>
@@ -194,7 +194,7 @@ class App extends Component {
           />
           <Error />
           <footer className="app-footer">
-            <p className="app-title">
+            <p className="footer-title">
               Copyright (c) 2017{" "}
               <a href="/">
                 <strong>Prehistoric US</strong>
@@ -512,11 +512,18 @@ class App extends Component {
               .then(response => response.json())
               .then(response => {
                 infoWindows[x].setContent(
-                  "<h6>" + response.displaytitle + "</h6>"
+                  "<h6>" +
+                    response.displaytitle +
+                    "</h6>" +
+                    "<p>Thanks to Wikipedia.com</p>"
                 );
                 url = "https://en.wikipedia.org/api/rest_v1/page/summary/";
                 query = "";
                 console.log(response.description);
+              })
+              .catch(err => {
+                console.log(err);
+                infoWindows[x].setContent("<h6>" + marker.title + "</h6>");
               });
             marker.setAnimation(window.google.maps.Animation.BOUNCE);
 
@@ -526,9 +533,48 @@ class App extends Component {
             marker.setAnimation(window.google.maps.Animation.null),
             6000
           );
+          return marker;
         });
       });
     }
+  }
+
+  getData(n) {
+    let infoWindows = this.state.infoWindows;
+    let map = this.state.map;
+    let markers = this.state.markers;
+    let query = "";
+    let url = "https://en.wikipedia.org/api/rest_v1/page/summary/";
+
+    markers.map(marker => {
+      if (marker.title === this.title) {
+        query = marker.query;
+        url += query;
+        console.log(url);
+        fetch(url)
+          .then(response => response.json())
+          .then(response => {
+            infoWindows[n].setContent(
+              "<h6>" +
+                response.displaytitle +
+                "</h6>" +
+                "<p>Thanks to Wikipedia.com</p>"
+            );
+            url = "https://en.wikipedia.org/api/rest_v1/page/summary/";
+            query = "";
+            console.log(response.description);
+          })
+          .catch(err => {
+            console.log(err);
+            infoWindows[n].setContent("<h6>" + marker.title + "</h6>");
+          });
+        marker.setAnimation(window.google.maps.Animation.BOUNCE);
+
+        infoWindows[n].open(map, marker);
+      }
+      setTimeout(marker.setAnimation(window.google.maps.Animation.null), 6000);
+      return marker;
+    });
   }
 
   // addIcons() {
