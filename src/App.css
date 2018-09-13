@@ -28,6 +28,11 @@ body {
   width: 100%;
 }
 
+.app-footer {
+  font-size: 0.3em;
+  line-height: 0.3em;
+}
+
 .app-wrap {
   width: 100%;
   display: flex;

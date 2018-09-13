@@ -122,6 +122,8 @@ class App extends Component {
     ],
     err: false,
     map: {},
+    description: "",
+    query: "Bone Wars",
     infoWindows: []
   };
 
@@ -135,9 +137,11 @@ class App extends Component {
     });
     this.setState({ type: "Prehistoric Finds" });
     this.renderMap();
+    this.getData(this.state.query);
   }
 
   render() {
+    console.log(this.state.description);
     this.addAnimations();
     if (!this.state.err) {
       return (
@@ -158,7 +162,9 @@ class App extends Component {
             styles={this.state.styles}
           />
           <footer className="app-footer">
-            <h1 className="app-title">Early USA</h1>
+            <p className="app-title">
+              <strong>{this.state.query}</strong>: {this.state.description}.
+            </p>
           </footer>
         </div>
       );
@@ -177,7 +183,9 @@ class App extends Component {
           />
           <Error />
           <footer className="app-footer">
-            <h1 className="app-title">Early USA</h1>
+            <p className="app-title">
+              <strong>{this.state.query}</strong>: {this.state.description}.
+            </p>
           </footer>
         </div>
       );
@@ -395,6 +403,7 @@ class App extends Component {
     window.initMap = this.initMap;
   };
 
+  //Load map with markers and set infoWindows to open when markers are clicked
   initMap = () => {
     if (window.google) {
       let map = new window.google.maps.Map(document.getElementById("map"), {
@@ -437,7 +446,12 @@ class App extends Component {
         this.state.infoWindows.push(infoWindow);
 
         marker.addListener("click", function() {
+          marker.setAnimation(window.google.maps.Animation.BOUNCE);
           infoWindow.open(map, marker);
+          setTimeout(
+            marker.setAnimation(window.google.maps.Animation.null),
+            6000
+          );
         });
 
         marker.setAnimation(window.google.maps.Animation.DROP);
@@ -452,6 +466,7 @@ class App extends Component {
     }
   };
 
+  //loads script for Google Maps API
   loadScript(url) {
     let index = window.document.getElementsByTagName("script")[0];
     let script = window.document.createElement("script");
@@ -461,16 +476,19 @@ class App extends Component {
     index.parentNode.insertBefore(script, index);
   }
 
+  //add listener to list item, when clicked animates marker with same title and opens its infoWindow
   addAnimations() {
     let listItems = document.querySelectorAll(".list-item");
     let infoWindows = this.state.infoWindows;
     let map = this.state.map;
     let markers = this.state.markers;
+    let query = "";
 
     for (let x = 0; x < listItems.length; x++) {
       listItems[x].addEventListener("click", function() {
         markers.map(marker => {
           if (marker.title === this.title) {
+            query = marker.title;
             marker.setAnimation(window.google.maps.Animation.BOUNCE);
             infoWindows[x].open(map, marker);
           }
@@ -483,26 +501,13 @@ class App extends Component {
     }
   }
 
-  openInfoWindow() {
-    let markers = this.state.markers.map(marker => {
-      let infoWindow = new window.google.maps.InfoWindow({
-        maxWidth: 250,
-        content:
-          "<div>" +
-          "<h5>" +
-          marker.title +
-          "</h5>" +
-          "<p>" +
-          marker.description +
-          "</p>" +
-          "</div>"
-      });
-      marker.setAnimation(window.google.maps.Animation.DROP);
-      marker.addListener("click", function() {
-        infoWindow.open(this.state.map, marker);
-      });
-    });
-    this.setState({ markers }, console.log(this.state.markers));
+  //Wikipedia API Request
+  getData(query) {
+    let url = "https://en.wikipedia.org/api/rest_v1/page/summary/";
+    url += query;
+    fetch(url)
+      .then(response => response.json())
+      .then(response => this.setState({ description: response.description }));
   }
 
   // addIcons() {
