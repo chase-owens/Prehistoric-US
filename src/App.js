@@ -136,6 +136,7 @@ class App extends Component {
     infoWindows: []
   };
 
+  //When component mounts, set critical states and render map
   componentDidMount() {
     this.setState({
       discoveriesDisplayed: [
@@ -148,8 +149,11 @@ class App extends Component {
     this.renderMap();
   }
 
+  //This is the where the app is rendered
+  //If map fails to load it displays a message saying so
   render() {
     this.addAnimations();
+    this.addIcons();
     if (!this.state.err) {
       return (
         <div className="container-fluid app-wrap">
@@ -207,14 +211,13 @@ class App extends Component {
     }
   }
 
+  //When Night or Day button pressed, change colors of theme and map
   changeColor = () => {
     this.setState(
       prevState => ({
         dark: !prevState.dark
       }),
       () => {
-        // Here I "cheated" - !this.state.dark = day - but the top style is the night style
-        // Since this happens before state change, I set it up backwards...
         if (this.state.dark) {
           //Night style
           document.documentElement.style.setProperty("--appHeader", "#443355");
@@ -252,6 +255,8 @@ class App extends Component {
     );
   };
 
+  //Function that changes style of map depending on the state of dark
+  //Style lifted directly from https://developers.google.com/maps/documentation/javascript/styling
   setStyle = () => {
     if (this.state.dark === true) {
       this.setState(
@@ -364,6 +369,9 @@ class App extends Component {
     }
   };
 
+  //Function taht filters discoveries displayed depending on state of type set by filter type
+  //If filter type matches discovery type the marker is displayed
+  //If all discoveries are selected all discoveries are displayed
   updateDiscoveriesDisplayed = type => {
     switch (type) {
       case "all":
@@ -403,6 +411,8 @@ class App extends Component {
     }
   };
 
+  //Filter function that takes in filter type and filters markers accordingly
+  //Maps through marker array, set all markers to visible, then make ones that don't equal type invisible
   filterMarkers(type) {
     this.state.markers.map(marker => marker.setVisible(true));
     let filteredArray = this.state.markers.filter(
@@ -411,6 +421,7 @@ class App extends Component {
     filteredArray.map(marker => marker.setVisible(false));
   }
 
+  //Render map
   renderMap = () => {
     this.loadScript(
       "https://maps.googleapis.com/maps/api/js?key=AIzaSyC9E-iirQBHlr38ShLLAW_AYZiupfNpipA&v=3&callback=initMap"
@@ -419,6 +430,9 @@ class App extends Component {
   };
 
   //Load map with markers and set infoWindows to open when markers are clicked
+  //Map discoveries displayed and build markers
+  //Use discoveries displayed properties and info to populate infowindows by default
+  //Add listener to markers. When marker clicked, open info window
   initMap = () => {
     if (window.google) {
       let map = new window.google.maps.Map(document.getElementById("map"), {
@@ -493,6 +507,8 @@ class App extends Component {
   }
 
   //add listener to list item, when clicked animates marker with same title and opens its infoWindow
+  //populates infoWindow using data fetched from Wikipedia API
+  //animates marker respective to list item when clicked
   addAnimations() {
     let listItems = document.querySelectorAll(".list-item");
 
@@ -539,21 +555,17 @@ class App extends Component {
     }
   }
 
-  // addIcons() {
-  //   this.state.markers.map(marker => marker.setIcon([marker.type].icons.url));
-  // }
-
-  // addIcons() {
-  //   this.state.markers.map(marker => {
-  //     if (marker.type === "dinosaur") {
-  //       marker.setIcon(dinosaur)
-  //     } else if (marker.type === "mammoth") {
-  //       marker.setIcon(mammoth)
-  //     } else {
-  //       marker.setIcon(track)
-  //     }
-  //   });
-  // }
+  addIcons() {
+    this.state.markers.map(marker => {
+      if (marker.type === "dinosaur") {
+        marker.setIcon(dinosaur);
+      } else if (marker.type === "mammoth") {
+        marker.setIcon(mammoth);
+      } else {
+        marker.setIcon(track);
+      }
+    });
+  }
 }
 
 export default App;
