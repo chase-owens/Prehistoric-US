@@ -4,9 +4,9 @@
 
 Prehistoric US displays dinosaur fossil discoveries, dinosaur track discoveries, and mammoth discoveries in the United States.
 
-![Daytime Image](https://farm2.staticflickr.com/1875/42850857590_6656d32219_k.jpg)
+![Daytime Image](https://farm2.staticflickr.com/1851/43946504094_9e05dc3818_h.jpg)
 
-![Night Image](https://farm2.staticflickr.com/1868/42850858320_4708c16203_k.jpg)
+![Night Image](https://farm2.staticflickr.com/1890/30794706198_08af918962_h.jpg)
 
 ## Run the app
 
@@ -54,6 +54,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Contributors
 
+- Icons: [The Noun Project](https://thenounproject.com)
 - Color Theme: [Color Hex](http://www.color-hex.com)
   - Day: [Planet Earthy Color Palette](http://www.color-hex.com/color-palette/65423)
   - Night: [Dark-Light Color Palette](https://www.color-hex.com/color-palette/64811)
@@ -61,8 +62,6 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - Formatting: [React Bootstrap](http://reactstrap.github.io)
 - Map: [Google Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/tutorial)
 - Content: [Wikipedia API](https://www.mediawiki.org/wiki/API:Main_page)
-
-* Icons: [The Noun Project](https://thenounproject.com)
 
 ## Future Directions
 
