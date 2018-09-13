@@ -54,12 +54,12 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Contributors
 
-*Color Theme: [Color Hex](http://www.color-hex.com)
-..*Day: [Planet Earthy Color Palette](http://www.color-hex.com/color-palette/65423)
-..*Night: [Dark-Light Color Palette](https://www.color-hex.com/color-palette/64811)
-*Formatting: [React Bootstrap](http://reactstrap.github.io)
-*Map: [Google Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/tutorial)
-*Content: [Wikipedia API](https://www.mediawiki.org/wiki/API:Main_page)
+- Color Theme: [Color Hex](http://www.color-hex.com)
+  .._ Day: [Planet Earthy Color Palette](http://www.color-hex.com/color-palette/65423)
+  .._ Night: [Dark-Light Color Palette](https://www.color-hex.com/color-palette/64811)
+- Formatting: [React Bootstrap](http://reactstrap.github.io)
+- Map: [Google Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/tutorial)
+- Content: [Wikipedia API](https://www.mediawiki.org/wiki/API:Main_page)
 
 ## Future Directions
 
