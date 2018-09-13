@@ -15,7 +15,7 @@ import sun from "./sun.png";
 class App extends Component {
   state = {
     dark: false,
-    type: "",
+    type: "all",
     markers: [],
     icons: {
       dinosaur: {
@@ -124,6 +124,7 @@ class App extends Component {
         type: "track"
       }
     ],
+    allDiscoveries: [],
     discoveriesDisplayed: [],
     styles: [
       {
@@ -140,6 +141,13 @@ class App extends Component {
   componentDidMount() {
     this.setState({
       discoveriesDisplayed: [
+        ...this.state.dinosaurFinds,
+        ...this.state.mammothFinds,
+        ...this.state.trackFinds
+      ]
+    });
+    this.setState({
+      allDiscoveries: [
         ...this.state.dinosaurFinds,
         ...this.state.mammothFinds,
         ...this.state.trackFinds
@@ -349,7 +357,7 @@ class App extends Component {
           ]
         },
         () => {
-          this.initMap();
+          this.reRenderMap(this.state.type);
         }
       );
     } else {
@@ -363,7 +371,7 @@ class App extends Component {
           ]
         },
         () => {
-          this.initMap();
+          this.reRenderMap(this.state.type);
         }
       );
     }
@@ -454,7 +462,6 @@ class App extends Component {
           animation: window.google.maps.Animation.DROP,
           id: i,
           type: find.type
-          //icon: find.type === "dinosaur" ? this.state.icons.dinosaur.url ? find.type === "mammoth" ? this.state.icons.mammoth.url : this.state.icons.mammoth.url
         });
 
         bounds.extend(marker.position);
@@ -496,6 +503,82 @@ class App extends Component {
     }
   };
 
+  //Re-render map when changing colors
+  reRenderMap = type => {
+    if (window.google) {
+      let map = new window.google.maps.Map(document.getElementById("map"), {
+        center: { lat: 39.8293, lng: -98.5795 },
+        zoom: 4,
+        styles: this.state.styles
+      });
+      this.setState({ map });
+
+      let bounds = new window.google.maps.LatLngBounds();
+
+      let markers = this.state.allDiscoveries.map((find, i) => {
+        let marker = new window.google.maps.Marker({
+          map: map,
+          position: { lat: find.location.lat, lng: find.location.lng },
+          query: find.query,
+          title: find.title,
+          derscription: find.description,
+          animation: window.google.maps.Animation.DROP,
+          id: i,
+          type: find.type
+        });
+
+        bounds.extend(marker.position);
+
+        let infoWindow = new window.google.maps.InfoWindow({
+          title: find.title,
+          maxWidth: 250,
+          content:
+            "<div>" +
+            "<h5>" +
+            find.title +
+            "</h5>" +
+            "<p>" +
+            find.description +
+            "</p>" +
+            "</div>"
+        });
+
+        this.state.infoWindows.push(infoWindow);
+
+        marker.addListener("click", function() {
+          marker.setAnimation(window.google.maps.Animation.BOUNCE);
+          infoWindow.open(map, marker);
+          setTimeout(
+            marker.setAnimation(window.google.maps.Animation.null),
+            6000
+          );
+        });
+
+        marker.setAnimation(window.google.maps.Animation.DROP);
+
+        return marker;
+      });
+
+      if (type === "Dinosaur Finds") {
+        let filteredArray = markers.filter(
+          marker => marker.type !== "dinosaur"
+        );
+        filteredArray.map(marker => marker.setVisible(false));
+      } else if (type === "Mammoth Finds") {
+        let filteredArray = markers.filter(marker => marker.type !== "mammoth");
+        filteredArray.map(marker => marker.setVisible(false));
+      } else if (type === "Dinosaur Tracks") {
+        let filteredArray = markers.filter(marker => marker.type !== "track");
+        filteredArray.map(marker => marker.setVisible(false));
+      }
+
+      map.fitBounds(bounds);
+      this.setState({ markers });
+    } else {
+      this.setState({ err: true });
+    }
+  };
+
   //loads script for Google Maps API
   loadScript(url) {
     let index = window.document.getElementsByTagName("script")[0];
@@ -523,7 +606,6 @@ class App extends Component {
           if (marker.title === this.title) {
             query = marker.query;
             url += query;
-            console.log(url);
             fetch(url)
               .then(response => response.json())
               .then(response => {
@@ -535,7 +617,6 @@ class App extends Component {
                 );
                 url = "https://en.wikipedia.org/api/rest_v1/page/summary/";
                 query = "";
-                console.log(response.description);
               })
               .catch(err => {
                 console.log(err);
@@ -564,6 +645,7 @@ class App extends Component {
       } else {
         marker.setIcon(track);
       }
+      return marker;
     });
   }
 }

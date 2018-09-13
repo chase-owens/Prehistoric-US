@@ -112,7 +112,7 @@ strong {
   width: 100%;
 }
 
-@media only screen and (min-width: 500px) {
+@media only screen and (min-width: 550px) {
   .main-div {
     flex-direction: row;
   }
