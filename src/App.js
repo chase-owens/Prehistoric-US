@@ -166,7 +166,11 @@ class App extends Component {
       return (
         <div className="container-fluid app-wrap">
           <Button id="app-color" onClick={this.changeColor}>
-            {this.state.dark === false ? "Night" : "Day"}
+            {this.state.dark === false ? (
+              <img src={moon} alt="change app color" />
+            ) : (
+              <img src={sun} alt="change app color" />
+            )}
           </Button>
           <header className="app-header">
             <h1 className="app-title">Prehistoric US</h1>

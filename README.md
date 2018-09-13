@@ -62,6 +62,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - Map: [Google Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/tutorial)
 - Content: [Wikipedia API](https://www.mediawiki.org/wiki/API:Main_page)
 
+* Icons: [The Noun Project](https://thenounproject.com)
+
 ## Future Directions
 
 I'd like to add more sites to the map and create additional funcitonality that permits users to get directions when requested, pull up discoveries within a specified range, and add visited locations to a list of 'Places Been.'
