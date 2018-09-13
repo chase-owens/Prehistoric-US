@@ -64,4 +64,4 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Future Directions
 
-I'd like to add more sites to the mapp and create additional funcitonality that permits users to get directions when requested, pull up discoveries within a specified range, and add visited locations to a list of 'Places Been.'
+I'd like to add more sites to the map and create additional funcitonality that permits users to get directions when requested, pull up discoveries within a specified range, and add visited locations to a list of 'Places Been.'
