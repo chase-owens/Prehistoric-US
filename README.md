@@ -10,7 +10,7 @@ Prehistoric US displays dinosaur fossil discoveries, dinosaur track discoveries,
 
 ## Run the app
 
-To run the app [click here]() or follow the steps below.
+To run the app [click here](https://chase-owens.github.io/Prehistoric-US/) or follow the steps below.
 
 Clone the repository or download the zipped folder. Then open the terminal and in the command line navigate to the folder with
 
