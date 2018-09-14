@@ -584,6 +584,7 @@ class App extends Component {
   };
 
   //loads script for Google Maps API
+  //Used this to help me figure out how to do this: https://www.klaasnotfound.com/2016/11/06/making-google-maps-work-with-react/
   loadScript(url) {
     let index = window.document.getElementsByTagName("script")[0];
     let script = window.document.createElement("script");
