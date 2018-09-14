@@ -186,7 +186,7 @@ class App extends Component {
           />
           <footer className="app-footer">
             <p className="footer-title">
-              Copyright (c) 2017{" "}
+              Copyright (c) 2018{" "}
               <a href="/">
                 <strong>Prehistoric US</strong>
               </a>{" "}
@@ -211,7 +211,7 @@ class App extends Component {
           <Error />
           <footer className="app-footer">
             <p className="footer-title">
-              Copyright (c) 2017{" "}
+              Copyright (c) 2018{" "}
               <a href="/">
                 <strong>Prehistoric US</strong>
               </a>{" "}
